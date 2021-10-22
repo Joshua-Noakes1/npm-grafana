@@ -1,19 +1,23 @@
 {
   "name": "npm-grafana",
   "version": "1.0.0",
-  "description": "",
+  "description": "Docker container to collect logs from NPM and forward them to grafana using InfuxDB",
   "main": "index.js",
+  "dependencies": {
+    "influx": "^5.9.2"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshua-noakes1/npm-grafana.git"
+  },
   "author": "joshua-noakes1",
   "license": "GPL-3.0",
-  "dependencies": {
-    "chokidar": "^3.5.2",
-    "ip-regex": "^4.3.0",
-    "log-timestamp": "^0.3.0",
-    "maxmind": "^4.3.2",
-    "path": "^0.12.7",
-    "read-last-lines": "^1.8.0"
-  }
+  "bugs": {
+    "url": "https://github.com/joshua-noakes1/npm-grafana/issues"
+  },
+  "homepage": "https://github.com/joshua-noakes1/npm-grafana#readme"
 }
