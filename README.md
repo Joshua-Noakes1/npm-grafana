@@ -1,25 +1,33 @@
 # npm-grafana
+
 ## **Usage**
-![imageOfMap](https://raw.githubusercontent.com/Joshua-Noakes1/npm-grafana/master/.github/images/brave_V60TBXFTnG.png)   
+
+![imageOfMap](https://raw.githubusercontent.com/Joshua-Noakes1/npm-grafana/master/.github/images/brave_V60TBXFTnG.png)  
 After selecing the GeoMap (or equivalent pannel) within the InfluxDB raw editor.
+
 ```SQL
 SELECT count("IP") AS "count" FROM "ReverseProxyConnections" WHERE $timeFilter GROUP BY "IP", "latitude", "longitude", "country", "domain"
 
 ```
+
 ## **Setup**
+
 ### **Docker-Cli**
+
 ```shell
 docker run --name npmgraf -it \
 -v ./nginx-proxy-manager/data/logs:/usr/src/app/logs \
 -e INFLUX_SERVER=100.101.102.103 \
 -e INFLUX_PORT=8086 \
--e INFLUX_USER=root \ 
+-e INFLUX_USER=root \
 -e INFLUX_PASSWORD=password \
 ghcr.io/joshua-noakes1/npm-grafana
 ```
+
 ### **Docker-Compose**
+
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   npm:
     image: ghcr.io/joshua-noakes1/npm-grafana
@@ -27,11 +35,12 @@ services:
     environment:
       - INFLUX_SERVER=100.101.102.103
       - INFLUX_PORT=8086
-      - INFLUX_USERNAME=root  
+      - INFLUX_USERNAME=root
       - INFLUX_PASSWORD=password
     volumes:
       - ./nginx-proxy-manager/data/logs:/usr/src/app/logs
 ```
+
 #### **Acknowledgement**
 
 This project is based on work from [Festeazy](https://github.com/Festeazy/nginxproxymanagerGraf) and their repo [nginxproxymanagerGraf](https://github.com/Festeazy/nginxproxymanagerGraf)
@@ -47,4 +56,5 @@ This project is based on work from [Festeazy](https://github.com/Festeazy/nginxp
   | ✔️ Distribution | | ℹ️ Disclose source |
   | ✔️ Patent use | | ℹ️ Same license |
   | ✔️ Private use | |
-- This repo includes GeoLite2 data created by MaxMind, available from [https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en)
+- This repo includes GeoLite2 data created by MaxMind, available from  
+  [https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data?lang=en)
