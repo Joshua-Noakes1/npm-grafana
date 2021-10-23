@@ -4,6 +4,7 @@ const ipRegex = require('ip-regex');
 const readLastLines = require('read-last-lines');
 const path = require("path");
 const clc = require("cli-color");
+const uaParser = require('ua-parser-js');
 const {
     downloadMaxmind
 } = require('./bin/downloadMaxmind');
@@ -28,12 +29,14 @@ const {
         // theres the chance an may be missed on startup but this should stop wrong data in influx
         if (event == 'change') {
             // read last line in file
-            readLastLines.read(path, 1).then(async (ipAddress) => {
+            readLastLines.read(path, 1).then(async (lastLineFile) => {
                 // check to see if theres an ip address
-                if (ipRegex().test(ipAddress)) {
+                if (ipRegex().test(lastLineFile)) {
                     console.log(clc.blue("[Info]"), `New file update detected (${event} - "${path}") `);
                     // lookup lat lon for client ip address
-                    const maxMind = await maxmindLookup(ipAddress.match(ipRegex())[0]);
+                    const maxMind = await maxmindLookup(lastLineFile.match(ipRegex())[0]);
+                    const ua = uaParser(lastLineFile);
+                    console.log(ua);
                     // if maxmind succss try and write data to InfluxDB
                     if (maxMind.success) {
                         try {
@@ -43,19 +46,18 @@ const {
                                     "ISO": maxMind.ISO,
                                     "latitude": maxMind.lat,
                                     "longitude": maxMind.lon,
-                                    "domain": ipAddress.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                    "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                     "country": maxMind.country.en,
-                                    "city": maxMind.city.en,
-                                    "IP": ipAddress.match(ipRegex())[0]
+                                    "IP": lastLineFile.match(ipRegex())[0],
+                                    "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                 },
                                 fields: {
                                     "ISO": maxMind.ISO,
                                     "latitude": maxMind.lat,
                                     "longitude": maxMind.lon,
-                                    "domain": ipAddress.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                    "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                     "country": maxMind.country.en,
-                                    "city": maxMind.city.en,
-                                    "IP": ipAddress.match(ipRegex())[0]
+                                    "IP": lastLineFile.match(ipRegex())[0]
                                 }
                             }], {
                                 database: 'npm'
