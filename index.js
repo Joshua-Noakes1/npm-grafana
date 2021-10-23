@@ -45,6 +45,7 @@ const {
                                     "longitude": maxMind.lon,
                                     "domain": ipAddress.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                     "country": maxMind.country.en,
+                                    "city": maxMind.city.en,
                                     "IP": ipAddress.match(ipRegex())[0]
                                 },
                                 fields: {
@@ -53,6 +54,7 @@ const {
                                     "longitude": maxMind.lon,
                                     "domain": ipAddress.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                     "country": maxMind.country.en,
+                                    "city": maxMind.city.en,
                                     "IP": ipAddress.match(ipRegex())[0]
                                 }
                             }], {
