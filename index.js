@@ -36,7 +36,6 @@ const {
                     // lookup lat lon for client ip address
                     const maxMind = await maxmindLookup(lastLineFile.match(ipRegex())[0]);
                     const ua = uaParser(lastLineFile);
-                    console.log(ua);
                     // if maxmind succss try and write data to InfluxDB
                     if (maxMind.success) {
                         try {
