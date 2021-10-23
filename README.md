@@ -1,5 +1,5 @@
 # npm-grafana
-
+[![Docker-BuildX-CI-MultiArch](https://github.com/Joshua-Noakes1/npm-grafana/actions/workflows/docker.yml/badge.svg?branch=master)](https://github.com/Joshua-Noakes1/npm-grafana/actions/workflows/docker.yml)
 ## **Usage**
 
 ![imageOfMap](https://raw.githubusercontent.com/Joshua-Noakes1/npm-grafana/master/.github/images/brave_V60TBXFTnG.png)  
