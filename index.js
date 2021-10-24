@@ -50,7 +50,7 @@ const {
                                         "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                         "country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
-                                        "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
+                                        "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     },
                                     fields: {
                                         "ISO": maxMind.ISO,
@@ -59,7 +59,7 @@ const {
                                         "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
                                         "country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
-                                        "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
+                                        "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     }
                                 }], {
                                     database: 'npm'
