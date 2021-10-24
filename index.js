@@ -32,37 +32,41 @@ const {
             readLastLines.read(path, 1).then(async (lastLineFile) => {
                 // check to see if theres an ip address
                 if (ipRegex().test(lastLineFile)) {
-                    console.log(clc.blue("[Info]"), `New file update detected (${event} - "${path}") `);
-                    // lookup lat lon for client ip address
-                    const maxMind = await maxmindLookup(lastLineFile.match(ipRegex())[0]);
-                    const ua = uaParser(lastLineFile);
-                    // if maxmind succss try and write data to InfluxDB
-                    if (maxMind.success) {
-                        try {
-                            await saveInflux([{
-                                measurement: 'ReverseProxyConnections',
-                                tags: {
-                                    "ISO": maxMind.ISO,
-                                    "latitude": maxMind.lat,
-                                    "longitude": maxMind.lon,
-                                    "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
-                                    "country": maxMind.country.en,
-                                    "IP": lastLineFile.match(ipRegex())[0],
-                                    "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
-                                },
-                                fields: {
-                                    "ISO": maxMind.ISO,
-                                    "latitude": maxMind.lat,
-                                    "longitude": maxMind.lon,
-                                    "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
-                                    "country": maxMind.country.en,
-                                    "IP": lastLineFile.match(ipRegex())[0]
-                                }
-                            }], {
-                                database: 'npm'
-                            });
-                        } catch (error) {
-                            return console.log(clc.red.bold("[Error]"), "Failed to write to InfluxDB", error);
+                    // skip uptime bots, make an issue / pr if you use a service and it doesnt include uptime
+                    if (!lastLineFile.includes("Uptime")) {
+                        console.log(clc.blue("[Info]"), `New file update detected (${event} - "${path}") `);
+                        // lookup lat lon for client ip address
+                        const maxMind = await maxmindLookup(lastLineFile.match(ipRegex())[0]);
+                        const ua = uaParser(lastLineFile);
+                        // if maxmind succss try and write data to InfluxDB
+                        if (maxMind.success) {
+                            try {
+                                await saveInflux([{
+                                    measurement: 'ReverseProxyConnections',
+                                    tags: {
+                                        "ISO": maxMind.ISO,
+                                        "latitude": maxMind.lat,
+                                        "longitude": maxMind.lon,
+                                        "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "country": maxMind.country.en,
+                                        "IP": lastLineFile.match(ipRegex())[0],
+                                        "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
+                                    },
+                                    fields: {
+                                        "ISO": maxMind.ISO,
+                                        "latitude": maxMind.lat,
+                                        "longitude": maxMind.lon,
+                                        "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "country": maxMind.country.en,
+                                        "IP": lastLineFile.match(ipRegex())[0],
+                                        "browser / OS": `Browser: ${ua.browser.name || "Unknown"}/${ua.browser.version || "Unknown"} OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
+                                    }
+                                }], {
+                                    database: 'npm'
+                                });
+                            } catch (error) {
+                                return console.log(clc.red.bold("[Error]"), "Failed to write to InfluxDB", error);
+                            }
                         }
                     }
                 }
