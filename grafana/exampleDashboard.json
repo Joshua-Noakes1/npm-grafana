@@ -1,0 +1,385 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 8,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Github",
+        "tooltip": "Github",
+        "type": "link",
+        "url": "https://github.com/Joshua-Noakes1/npm-grafana/"
+      }
+    ],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 13,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "basemap": {
+            "config": {},
+            "type": "default"
+          },
+          "controls": {
+            "mouseWheelZoom": true,
+            "showAttribution": true,
+            "showDebug": false,
+            "showScale": false,
+            "showZoom": true
+          },
+          "layers": [
+            {
+              "config": {
+                "color": {
+                  "field": "count",
+                  "fixed": "purple"
+                },
+                "fillOpacity": 0.4,
+                "shape": "circle",
+                "showLegend": true,
+                "size": {
+                  "field": "count",
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 1
+                }
+              },
+              "location": {
+                "gazetteer": "public/gazetteer/countries.json",
+                "latitude": "latitude",
+                "longitude": "longitude",
+                "mode": "coords"
+              },
+              "type": "markers"
+            }
+          ],
+          "view": {
+            "id": "europe",
+            "lat": 46,
+            "lon": 14,
+            "shared": false,
+            "zoom": 2.5
+          }
+        },
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [
+                  "IP"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "longitude"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "country"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "domain"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "ReverseProxyConnections",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT count(\"IP\") AS \"count\" FROM \"ReverseProxyConnections\" WHERE $timeFilter GROUP BY \"latitude\", \"longitude\", \"IP\",\"Domain\",\"Country\"",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "table",
+            "select": [
+              [
+                {
+                  "params": [
+                    "IP"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                },
+                {
+                  "params": [
+                    "count"
+                  ],
+                  "type": "alias"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "time",
+                "operator": ">",
+                "value": "now()"
+              }
+            ],
+            "tz": "GMT"
+          }
+        ],
+        "title": "Active Connections",
+        "type": "geomap"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 11,
+          "x": 13,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "none",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.2.2",
+        "targets": [
+          {
+            "query": "SELECT count(\"IP\") AS \"count\" FROM \"ReverseProxyConnections\" WHERE $timeFilter ",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Active Connections (Total)",
+        "type": "stat"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "filterable": true
+            },
+            "mappings": [],
+            "min": 0,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 24,
+          "x": 0,
+          "y": 12
+        },
+        "id": 6,
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "Time"
+            }
+          ]
+        },
+        "pluginVersion": "8.2.2",
+        "targets": [
+          {
+            "groupBy": [
+              {
+                "params": [
+                  "IP"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "latitude"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "longitude"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "country"
+                ],
+                "type": "tag"
+              },
+              {
+                "params": [
+                  "domain"
+                ],
+                "type": "tag"
+              }
+            ],
+            "measurement": "ReverseProxyConnections",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT \"Domain\" AS \"Domain\", \"Country\", \"OS\" FROM \"ReverseProxyConnections\" WHERE $timeFilter GROUP BY \"IP\"",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "table",
+            "select": [
+              [
+                {
+                  "params": [
+                    "IP"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "count"
+                },
+                {
+                  "params": [
+                    "count"
+                  ],
+                  "type": "alias"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "time",
+                "operator": ">",
+                "value": "now()"
+              }
+            ],
+            "tz": "GMT"
+          }
+        ],
+        "title": "Active Connections",
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 31,
+    "style": "dark",
+    "tags": [
+      "Network",
+      "Proxy",
+      "Nginx"
+    ],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Nginx Proxy Manager",
+    "uid": "2Jjzx6O7k",
+    "version": 2
+  }

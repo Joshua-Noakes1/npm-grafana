@@ -54,7 +54,7 @@ const {
                                         "ISO": maxMind.ISO,
                                         "latitude": maxMind.lat,
                                         "longitude": maxMind.lon,
-                                        "Domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "Domain": lastLineFile.match(/([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]+/)[0],
                                         "Country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
@@ -63,7 +63,7 @@ const {
                                         "ISO": maxMind.ISO,
                                         "latitude": maxMind.lat,
                                         "longitude": maxMind.lon,
-                                        "Domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "Domain": lastLineFile.match(/([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]+/)[0],
                                         "Country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
