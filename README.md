@@ -5,11 +5,15 @@
 ![imageOfMap](https://raw.githubusercontent.com/Joshua-Noakes1/npm-grafana/master/.github/images/brave_V60TBXFTnG.png)  
 After selecing the GeoMap (or equivalent pannel) within the InfluxDB raw editor.
 
+#### [**WorldMap**](https://grafana.com/grafana/plugins/grafana-worldmap-panel/)
 ```SQL
 SELECT count("IP") AS "count" FROM "ReverseProxyConnections" WHERE $timeFilter GROUP BY "IP", "latitude", "longitude", "country", "domain"
 
 ```
-
+#### **Table**
+```SQL
+SELECT "Domain" AS "Domain", "Country", "OS" FROM "ReverseProxyConnections" WHERE $timeFilter GROUP BY "IP"
+```
 ## **Setup**
 
 ### **Docker-Cli**
@@ -19,6 +23,7 @@ docker run --name npmgraf -it \
 -v ./nginx-proxy-manager/data/logs:/usr/src/app/logs \
 -e INFLUX_SERVER=100.101.102.103 \
 -e INFLUX_PORT=8086 \
+-e INFLUX_DATABASE=npm \
 -e INFLUX_USER=root \
 -e INFLUX_PASSWORD=password \
 ghcr.io/joshua-noakes1/npm-grafana
@@ -35,6 +40,7 @@ services:
     environment:
       - INFLUX_SERVER=100.101.102.103
       - INFLUX_PORT=8086
+      - INFLUX_DATABASE=npm
       - INFLUX_USERNAME=root
       - INFLUX_PASSWORD=password
     volumes:

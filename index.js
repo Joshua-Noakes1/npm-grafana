@@ -1,3 +1,4 @@
+require("dotenv").config();
 const fs = require("fs");
 const chokidar = require('chokidar');
 const ipRegex = require('ip-regex');
@@ -19,7 +20,12 @@ const {
     // checking for maxmind
     if (!fs.existsSync(path.join(__dirname, 'maxmind', 'GeoLite2-City.mmdb'))) {
         console.log(clc.red.bold("[Error]"), 'Missing MaxMind GeoLite2 data, Attempting download...');
-        await downloadMaxmind();
+        try {
+            await downloadMaxmind();
+        } catch (error) {
+            console.log(clc.red.bold("[Error]"), "Failed to download MaxMind GeoLite2 data", error);
+            return process.exit(1);
+        }
         console.log(clc.green("[Success]"), 'Downloaded MaxMind GeoLite2 data');
     }
 
@@ -43,12 +49,13 @@ const {
                             try {
                                 await saveInflux([{
                                     measurement: 'ReverseProxyConnections',
+                                    time: Math.floor(new Date().getTime() / 1000.0),
                                     tags: {
                                         "ISO": maxMind.ISO,
                                         "latitude": maxMind.lat,
                                         "longitude": maxMind.lon,
-                                        "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
-                                        "country": maxMind.country.en,
+                                        "Domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "Country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     },
@@ -56,13 +63,14 @@ const {
                                         "ISO": maxMind.ISO,
                                         "latitude": maxMind.lat,
                                         "longitude": maxMind.lon,
-                                        "domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
-                                        "country": maxMind.country.en,
+                                        "Domain": lastLineFile.match(/([a-z0-9]+\.)*[a-z0-9]+\.[a-z]+/)[0], // https://stackoverflow.com/a/26093588
+                                        "Country": maxMind.country.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     }
                                 }], {
-                                    database: 'npm'
+                                    database: process.env.INFLUX_DATABASE || 'npm',
+                                    precision: "s"
                                 });
                             } catch (error) {
                                 return console.log(clc.red.bold("[Error]"), "Failed to write to InfluxDB", error);

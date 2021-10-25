@@ -13,6 +13,7 @@ async function maxmindLookup(IPAddress) {
         const maxmind = await Maxmind.open(path.join(__dirname, '../', 'maxmind', 'GeoLite2-City.mmdb'));
         try {
             const maxmindLookup = maxmind.get(IPAddress);
+            console.log(clc.green("[Success]"), `Found Country: "${maxmindLookup.country.names.en}"`);
             // format data and return it
             return {
                 success: true,

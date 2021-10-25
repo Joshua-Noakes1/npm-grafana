@@ -1,18 +1,20 @@
 require("dotenv").config();
 const clc = require("cli-color");
 const Influx = require('influx');
-const influxDB = new Influx.InfluxDB(`http://${process.env.INFLUX_USERNAME}:${process.env.INFLUX_PASSWORD}@${process.env.INFLUX_SERVER}:${process.env.INFLUX_PORT}/npm`);
+const database = process.env.INFLUX_DATABASE || 'npm';
+const influxDB = new Influx.InfluxDB(`http://${process.env.INFLUX_USERNAME}:${process.env.INFLUX_PASSWORD}@${process.env.INFLUX_SERVER}:${process.env.INFLUX_PORT}/${database}`);
 
 async function saveInflux(data) {
     // check to see if npm database exists
     try {
         await influxDB.getDatabaseNames().then(async (dbs) => {
-            if (!dbs.includes('npm')) {
-                console.log(clc.blue("[Info]"), "Creating \"npm\" database");
+            if (!dbs.includes(database)) {
+                console.log(clc.blue("[Info]"), `Creating database "${database}"`);
                 try {
-                    return await influxDB.createDatabase('npm');
+                    await influxDB.createDatabase(database);
+                    return console.log(clc.green("[Success]"), `Successfuly created database "${database}"`)
                 } catch (error) {
-                    return console.log(clc.red.bold("[Error]"), "Failed to create \"npm\" database");
+                    return console.log(clc.red.bold("[Error]"), `Failed to create database "${database}"`);
                 }
             }
         })
