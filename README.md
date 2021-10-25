@@ -1,11 +1,12 @@
 # npm-grafana
 [![Docker-BuildX-CI-MultiArch](https://github.com/Joshua-Noakes1/npm-grafana/actions/workflows/docker.yml/badge.svg?branch=master)](https://github.com/Joshua-Noakes1/npm-grafana/actions/workflows/docker.yml)
+
 ## **Usage**
 
 ![imageOfMap](https://raw.githubusercontent.com/Joshua-Noakes1/npm-grafana/master/.github/images/brave_V60TBXFTnG.png)  
 After selecing the GeoMap (or equivalent pannel) within the InfluxDB raw editor.
 
-#### [**WorldMap**](https://grafana.com/grafana/plugins/grafana-worldmap-panel/)
+#### **WorldMap**
 ```SQL
 SELECT count("IP") AS "count" FROM "ReverseProxyConnections" WHERE $timeFilter GROUP BY "IP", "latitude", "longitude", "country", "domain"
 
@@ -14,6 +15,8 @@ SELECT count("IP") AS "count" FROM "ReverseProxyConnections" WHERE $timeFilter G
 ```SQL
 SELECT "Domain" AS "Domain", "Country", "OS" FROM "ReverseProxyConnections" WHERE $timeFilter GROUP BY "IP"
 ```
+## **Example**
+An example dashboard can be found [here](https://github.com/Joshua-Noakes1/npm-grafana/blob/master/grafana/exampleDashboard.json)
 ## **Setup**
 
 ### **Docker-Cli**
