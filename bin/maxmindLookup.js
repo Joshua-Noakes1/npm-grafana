@@ -19,7 +19,7 @@ async function maxmindLookup(IPAddress) {
                 success: true,
                 ISO: maxmindLookup.country.iso_code,
                 country: maxmindLookup.country.names,
-                city: maxmindLookup.subdivisions[0].names,
+                city: maxmindLookup.city.names,
                 lat: maxmindLookup.location.latitude,
                 lon: maxmindLookup.location.longitude
             }
