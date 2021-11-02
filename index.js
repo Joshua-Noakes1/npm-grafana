@@ -56,6 +56,7 @@ const {
                                         "longitude": maxMind.lon,
                                         "Domain": lastLineFile.match(/([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]+/)[0],
                                         "Country": maxMind.country.en,
+                                        "City": maxMind.city.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     },
@@ -65,6 +66,7 @@ const {
                                         "longitude": maxMind.lon,
                                         "Domain": lastLineFile.match(/([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]+/)[0],
                                         "Country": maxMind.country.en,
+                                        "City": maxMind.city.en,
                                         "IP": lastLineFile.match(ipRegex())[0],
                                         "OS": `OS: ${ua.os.name || "Unknown"} Arch: ${ua.cpu.architecture || "Unknown"}`
                                     }
